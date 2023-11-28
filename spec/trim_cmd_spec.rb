@@ -8,6 +8,7 @@ RSpec.describe(MediaTrim) do
     expect(mt.copy_filename).to eq('demo/trim.demo.mp4')
     expect(mt.start).to         eq('00:00')
     expect(mt.interval).to      eq(['-ss', '00:00'])
+    expect(mt.msg_end).to       be_nil
   end
 
   it 'initializes with end timecode' do
@@ -16,6 +17,7 @@ RSpec.describe(MediaTrim) do
     expect(mt.copy_filename).to eq('demo/trim.demo.mp4')
     expect(mt.start).to         eq('00:00')
     expect(mt.interval).to      eq(['-ss', '00:00', '-to', '00:01'])
+    expect(mt.msg_end).to       eq(' to 00:01 (duration 00:01)')
   end
 
   it 'initializes when overwrite is specified' do

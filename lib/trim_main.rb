@@ -9,11 +9,12 @@ class MediaTrim
     @copy_filename = MediaTrim.expand_env(trimmed_filename) if trimmed_filename
     @start = MediaTrim.time_format start
     @interval = ['-ss', MediaTrim.time_format(@start)]
-    @interval += ['-to', MediaTrim.time_format(to)] if to
 
     @overwrite = options[:overwrite] ? '-y' : '-n'
     @quiet     = options[:quiet].nil? || options[:quiet] ? ['-hide_banner', '-loglevel', 'error', '-nostats'] : []
     @view      = options[:view].nil? ? true : options[:view]
+
+    prepare(@start, to, mode: :timecode) if to
   end
 
   def options
