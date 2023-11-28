@@ -2,7 +2,7 @@
 
 Trims an audio or video file using `ffmpeg`.
 
-* Works with all formats supported by ffmpeg.
+* Works with all formats supported by `ffmpeg`, including `mp3`, `mp4`, `mkv`, and many more.
 * Seeks to the nearest frame positions by re-encoding the media.
 * Reduces file size produced by OBS Studio by over 80 percent.
 * Can be used as a Ruby gem.
@@ -76,28 +76,28 @@ unless the `-q` option is specified.
 
 #### Examples
 
-Crop `dir/file.mp4` from 15.0 seconds to the end of the video, save to `dir/trim.file.mp4`:
+Crop `dir/file.mp4` from 15.0 seconds to the end of the video, save to `demo/trim.demo.mp4`:
 
 ```shell
-$ trim dir/file.mp4 15
+$ trim demo/demo.mp4 15
 ```
 
-Crop dir/file.mkv from 3 minutes, 25 seconds to 9 minutes, 35 seconds, save to `dir/trim.file.mkv`:
+Crop dir/file.mkv from 3 minutes, 25 seconds to 9 minutes, 35 seconds, save to `demo/trim.demo.mp4`:
 
 ```shell
-$ trim dir/file.mkv 3:25 9:35
+$ trim demo/demo.mp4 3:25 9:35
 ```
 
 Same as the previous example, using optional `to` syntax:
 
 ```shell
-$ trim dir/file.mkv 3:25 to 9:35
+$ trim demo/demo.mp4 3:25 to 9:35
 ```
 
 Save as the previous example, but specify the duration instead of the end time by using the `for` keyword:
 
 ```shell
-$ trim dir/file.mkv 3:25 for 6:10
+$ trim demo/demo.mp4 3:25 for 6:10
 ```
 
 
