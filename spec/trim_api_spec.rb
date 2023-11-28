@@ -1,6 +1,6 @@
 require_relative '../lib/media_trim'
 
-# Tests command line argument handling
+# Tests API argument handling
 RSpec.describe(MediaTrim) do
   it 'initializes with only start timecode' do
     mt = described_class.new 'demo/demo.mp4', 'demo/trim.demo.mp4', '0'
