@@ -4,9 +4,8 @@ Gem::Specification.new do |spec|
   host = 'https://github.com/mslinn/media_trim'
 
   spec.authors               = ['Mike Slinn']
-  spec.bindir                = 'binstub'
-  spec.executables           = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.description           = <<~END_DESC
+  spec.bindir                = 'exe'
+  spec.description = <<~END_DESC
     Trim an audio or video file using ffmpeg
 
     - Works with all formats supported by ffmpeg, including mp3, mp4, mkv, and many more.
@@ -48,7 +47,8 @@ Gem::Specification.new do |spec|
       trim demo/demo.mp4 3:25 for 6:10
   END_DESC
   spec.email                 = ['mslinn@mslinn.com']
-  spec.files                 = Dir['.rubocop.yml', 'LICENSE.*', 'Rakefile', '{lib,spec}/**/*', '*.gemspec', '*.md']
+  spec.files                 = Dir['.rubocop.yml', 'LICENSE.*', 'Rakefile', '{exe,lib,spec}/**/*', '*.gemspec', '*.md']
+  spec.executables           = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.homepage              = 'https://www.mslinn.com/av_studio/425-trimming-media.html'
   spec.license               = 'MIT'
   spec.metadata = {

@@ -12,9 +12,9 @@
         "2"
       ],
       "debugPort": "0",
-      "name": "Debug music/trim",
+      "name": "Debug media_trim",
       "request": "launch",
-      "script": "lib/trim.rb",
+      "script": "lib/media_trim.rb",
       "type": "rdbg",
     },
     {
