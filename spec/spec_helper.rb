@@ -1,4 +1,4 @@
-require_relative '../lib/trim'
+require_relative '../lib/media_trim'
 
 RSpec.configure do |config|
   config.filter_run_when_matching focus: true

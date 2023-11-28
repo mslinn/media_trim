@@ -6,6 +6,7 @@ require_relative 'media_trim/version' unless defined? MediaTrimVersion::VERSION
 require_relative 'trim_class'
 require_relative 'trim_help'
 require_relative 'trim_main'
+require_relative 'trim_run'
 
 if __FILE__ == $PROGRAM_NAME
   media_trim = MediaTrim.new

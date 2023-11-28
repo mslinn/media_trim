@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+
+gem 'media_trim', path: '../' # use unreleased gem dependencies defined in the parent project
+
+group :test, :development do
+  gem 'debug', '>= 1.0.0', require: false
+  gem 'rubocop', require: false
+end

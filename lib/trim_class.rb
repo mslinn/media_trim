@@ -1,16 +1,15 @@
 class MediaTrim
-  def self.define_error
-    Class.new StandardError
-  end
-
   def self.add_times(str1, str2)
     time1 = Time.parse mk_time str1
     time2 = Time.parse mk_time str2
-    m = time2.strftime('%M').to_i
     h = time2.strftime('%H').to_i
+    m = time2.strftime('%M').to_i
     s = time2.strftime('%S').to_i
     millis = time2.strftime('%L').to_f / 1000.0
-    (time1 + (h * 60 * 60) + (m * 60) + s + millis).strftime('%H:%M:%S')
+    sum = (time1 + (h * 60 * 60) + (m * 60) + s + millis)
+    return sum.strftime('%H:%M:%S') if h.positive?
+
+    sum.strftime('%M:%S')
   end
 
   def self.time_format(elapsed_seconds)
