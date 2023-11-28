@@ -3,16 +3,16 @@ TrimError = Class.new StandardError # Define a new StandardError subclass
 class MediaTrim
   attr_accessor :copy_filename, :fname, :interval, :msg_end, :overwrite, :quiet, :start, :view
 
-  def initialize(filename = nil, trimmed_filename = nil, start = '0', to = nil)
-    # overwrite: true, quiet: true, view: true
+  def initialize(filename = nil, trimmed_filename = nil, start = '0', to = nil, **options)
     @fname = MediaTrim.expand_env(filename) if filename
     @copy_filename = MediaTrim.expand_env(trimmed_filename) if trimmed_filename
     @start = start if start
     @interval = ['-ss', @start]
     @interval += ['-t', to] if to
-    @overwrite = overwrite ? '-y' : '-n'
-    @quiet = quiet ? ['-hide_banner', '-loglevel', 'error', '-nostats'] : []
-    @view = view
+
+    @overwrite = options[:overwrite] ? '-y' : '-n'
+    @quiet     = options[:quiet].nil? || options[:quiet] ? ['-hide_banner', '-loglevel', 'error', '-nostats'] : []
+    @view      = options[:view].nil? ? true : options[:view]
   end
 
   def options
