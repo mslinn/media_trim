@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
     Reduces file size procduced by OBS Studio by over 80 percent.
 
     #{spec.name} names the output file by adding '.trim' before the file extension.
-    By default, does not overwrite pre-existing output files.
+    By default, does not @overwrite pre-existing output files.
     Displays the trimmed file, unless the -q option is specified
 
     Usage:
@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
       -d Enable debug output
       -f Overwrite output file if present
       -v Verbose output
-      -V Do not view the trimmed file when complete.
+      -V Do not @view the trimmed file when complete.
 
     start and END have the format [HH:[MM:]]SS[.XXX]
     END defaults to end of audio/video file
