@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
     OPTIONS are:
       -d Enable debug output.
       -f Overwrite output file if present.
+      -h Display help information.
       -v Verbose output.
       -V Do not @view the trimmed file when complete.
 

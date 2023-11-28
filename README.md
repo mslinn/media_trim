@@ -11,9 +11,14 @@ Trims an audio or video file using `ffmpeg`.
 
 ## Installation
 
+You need a working Ruby environment to install this program.
+I describe how to set that up [here](http://localhost:4001/ruby/1000-ruby-setup.html).
+
+
 ### Standalone
 
-Type:
+The `trim` command is provided by the `media_trim` Ruby gem.
+Install it like this:
 
 ```shell
 $ gem install media_trim
@@ -69,6 +74,7 @@ unless the `-q` option is specified.
 `OPTIONS` are:
 
 * `-d` Enable debug output.
+* `-h` Display help information.
 * `-f` Overwrite output file if present.
 * `-v` Verbose output.
 * `-V` Do not view the trimmed file when complete.
