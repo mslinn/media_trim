@@ -1,7 +1,7 @@
-require_relative 'lib/trim/version' unless defined? MediaTrimVersion::VERSION
+require_relative 'lib/media_trim/version' unless defined? MediaTrimVersion::VERSION
 
 Gem::Specification.new do |spec|
-  host = 'https://github.com/mslinn/trim'
+  host = 'https://github.com/mslinn/media_trim'
 
   spec.authors               = ['Mike Slinn']
   spec.bindir                = 'binstub'
@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
     Reduces file size procduced by OBS Studio by over 80 percent.
 
     #{spec.name} names the output file by adding '.trim' before the file extension.
-    By default, does not @overwrite pre-existing output files.
+    By default, does not overwrite pre-existing output files.
     Displays the trimmed file, unless the -q option is specified
 
     Usage:
@@ -33,18 +33,18 @@ Gem::Specification.new do |spec|
       # Crop dir/file.mp4 from 15.0 seconds to the end of the video, save to dir/file.trim.mp4:
       #{spec.name} dir/file.mp4 15
 
-      # Crop dir/file.mkv from 3.25 minutes to 9 minutes, 35 seconds, save to dir/file.trim.mkv:
+      # Crop dir/file.mkv from 3 minutes, 25 seconds to 9 minutes, 35 seconds, save to dir/file.trim.mkv:
       #{spec.name} dir/file.mkv 3:25 9:35
 
       # Same as the previous example, using optional 'to' syntax:
       #{spec.name} dir/file.mkv 3:25 to 9:35
 
-      # Save as the previous example, but specify the duration instead of the end time:
+      # Save as the previous example, but specify the duration instead of the end time by using the for keyword:
       #{spec.name} dir/file.mkv 3:25 for 6:10
   END_DESC
   spec.email                 = ['mslinn@mslinn.com']
   spec.files                 = Dir['.rubocop.yml', 'LICENSE.*', 'Rakefile', '{lib,spec}/**/*', '*.gemspec', '*.md']
-  spec.homepage              = 'https://github.com/mslinn/trim'
+  spec.homepage              = 'https://www.mslinn.com/av_studio/425-trimming-media.html'
   spec.license               = 'MIT'
   spec.metadata = {
     'allowed_push_host' => 'https://rubygems.org',
@@ -53,7 +53,7 @@ Gem::Specification.new do |spec|
     'homepage_uri'      => spec.homepage,
     'source_code_uri'   => host,
   }
-  spec.name                 = 'trim'
+  spec.name                 = 'media_trim'
   spec.post_install_message = <<~END_MESSAGE
 
     Thanks for installing #{spec.name}!
@@ -61,7 +61,7 @@ Gem::Specification.new do |spec|
   END_MESSAGE
   spec.require_paths         = ['lib']
   spec.required_ruby_version = '>= 2.5.0'
-  spec.summary               = 'MediaTrim an audio or video file using ffmpeg'
+  spec.summary               = 'Trim an audio or video file using ffmpeg'
   spec.version               = MediaTrimVersion::VERSION
 
   spec.add_dependency 'colorator'

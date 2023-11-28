@@ -17,6 +17,9 @@ Gemspec/DeprecatedAttributeAssignment:
 Gemspec/RequireMFA:
   Enabled: false
 
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
 Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
@@ -29,8 +32,8 @@ Metrics/AbcSize:
 
 Metrics/BlockLength:
   Exclude:
-    - trim.gemspec
-  Max: 30
+    - media_trim.gemspec
+  Max: 40
 
 Metrics/CyclomaticComplexity:
   Max: 15

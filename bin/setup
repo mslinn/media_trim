@@ -33,4 +33,6 @@ for X in debug rake rspec-core rubocop; do
 done
 
 mkdir -p demo/
-wget -O demo/demo.mp4 https://file-examples.com/storage/fe19e15eac6560f8c936c41/2017/04/file_example_MP4_480_1_5MG.mp4
+if ! [ -f demo/demo.mp4 ]; then
+  wget -O demo/demo.mp4 https://file-examples.com/storage/fe19e15eac6560f8c936c41/2017/04/file_example_MP4_480_1_5MG.mp4
+fi
