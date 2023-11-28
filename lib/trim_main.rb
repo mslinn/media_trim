@@ -35,7 +35,7 @@ class MediaTrim
     ext = File.extname fname
     @copy_filename = "#{File.dirname fname}/trim.#{original_filename}#{ext}"
 
-    help 'Please specify the time to start trimming the video file from' unless ARGV[1]
+    MediaTrim.help 'Please specify the time to start trimming the video file from' unless ARGV[1]
     start = ARGV[1]
 
     @interval = ['-ss', start]

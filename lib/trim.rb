@@ -8,7 +8,9 @@ require_relative 'trim_class'
 require_relative 'trim_help'
 require_relative 'trim_main'
 
-media_trim = MediaTrim.new
-media_trim.options
-media_trim.setup
-media_trim.run
+if __FILE__ == $PROGRAM_NAME
+  media_trim = MediaTrim.new
+  media_trim.options
+  media_trim.setup
+  media_trim.run
+end
