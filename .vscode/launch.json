@@ -5,6 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "args": [
+        "demo/demo.mp4",
+        "-f",
+        "1",
+        "2"
+      ],
+      "debugPort": "0",
+      "name": "Debug music/trim",
+      "request": "launch",
+      "script": "lib/trim.rb",
+      "type": "rdbg",
+    },
+    {
       "name": "Run selected Ruby file",
       "program": "ruby ${file}",
       "request": "launch",

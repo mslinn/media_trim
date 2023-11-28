@@ -5,7 +5,8 @@ SOURCE=${BASH_SOURCE[0]}
 while [ -L "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
   DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
   SOURCE=$(readlink "$SOURCE")
-  [[ $SOURCE != /* ]] && SOURCE=$DIR/$SOURCE # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+  # if $SOURCE was a relative symlink, resolve it relative to the path where the symlink file was located
+  [[ $SOURCE != /* ]] && SOURCE=$DIR/$SOURCE
 done
 DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
 cd "$DIR/.." || exit
@@ -16,9 +17,20 @@ fi
 
 rm -f Gemfile.lock
 if [[ -z "$( which bundle )" ]]; then gem install bundler; fi
-BUNDLE_WITH="development" bundle
+export BUNDLE_WITH=development
+bundle
 
-bundle binstubs rspec-core     --force --path binstub
-bundle binstubs rubocop        --force --path binstub
+if [ -d demo/ ]; then
+  cd demo || exit
+  bundle
+  cd ..
+fi
 
-# Do any other automated setup that you need to do here
+# See https://www.honeybadger.io/blog/rbenv-rubygems-bundler-path/
+# See https://linuxtut.com/visual-studio-code-i-get-a-syntax-error-when-debugging-when-using-rbenv-6ee58/
+for X in debug rake rspec-core rubocop; do
+  bundle binstubs "$X" --force --path binstub
+done
+
+mkdir -p demo/
+wget -O demo/demo.mp4 https://file-examples.com/storage/fe19e15eac6560f8c936c41/2017/04/file_example_MP4_480_1_5MG.mp4
