@@ -55,10 +55,10 @@ $ bundle
 trim [OPTIONS] dir/file.ext start [[to|for] end]
 ```
 
-* `start` and `end` timecodes have the format [HH:[MM:]]SS[.XXX].
+* The `start` and `end` timecodes have the format `[HH:[MM:]]SS[.XXX]`.
   Note that decimal seconds may be specified, but frames may not;
-  this is consistent with how ffmpeg parses timecodes.
-* `end` defaults to the end of audio/video file
+  this is consistent with how `ffmpeg` parses timecodes.
+* `end` defaults to the end of the audio/video file
 
 When run as a command, output files are named by adding a `trim.` prefix to the media file name,
 e.g. `dir/trim.file.ext`.

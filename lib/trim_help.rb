@@ -17,10 +17,10 @@ class MediaTrim
       Command-line Usage:
         trim [OPTIONS] dir/file.ext start [[to|for] end]
 
-      - start and end timecodes have the format [HH:[MM:]]SS[.XXX]
+      - The start and end timecodes have the format [HH:[MM:]]SS[.XXX]
         Note that decimal seconds may be specified, but frames may not;
         this is consistent with how ffmpeg parses timecodes.
-      - end defaults to the end of audio/video file
+      - end defaults to the end of the audio/video file
 
       OPTIONS are:
         -d Enable debug output
