@@ -3,7 +3,7 @@ TrimError = Class.new StandardError # Define a new StandardError subclass
 class MediaTrim
   attr_accessor :copy_filename, :fname, :interval, :msg_end, :overwrite, :quiet, :start, :view
 
-  # @param to [String] end timecode; duration not supported
+  # @param to [String] end timecode; duration not supported for API
   def initialize(filename = nil, trimmed_filename = nil, start = '0', to = nil, **options)
     @fname = MediaTrim.expand_env(filename) if filename
     @copy_filename = MediaTrim.expand_env(trimmed_filename) if trimmed_filename
