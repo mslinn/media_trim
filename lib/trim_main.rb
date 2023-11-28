@@ -30,9 +30,10 @@ class MediaTrim
     end.parse!
   end
 
-  def setup
-    MediaTrim.help 'Please specify the name of the video file to trim' unless ARGV[0]
-    @fname = MediaTrim.expand_env ARGV[0]
+  # @param argv [array] Copy of ARGV
+  def setup(argv)
+    MediaTrim.help 'Please specify the name of the video file to trim' unless argv[0]
+    @fname = MediaTrim.expand_env argv[0]
     unless File.exist? @fname
       puts "Error: '#{File.realpath @fname}' does not exist.".red
       exit 1
@@ -41,23 +42,23 @@ class MediaTrim
     ext = File.extname @fname
     @copy_filename = "#{File.dirname @fname}/trim.#{original_filename}#{ext}"
 
-    MediaTrim.help 'Please specify the time to @start trimming the video file from' unless ARGV[1]
-    @start = ARGV[1]
+    MediaTrim.help 'Please specify the time to @start trimming the video file from' unless argv[1]
+    @start = MediaTrim.time_format argv[1]
 
     @interval = ['-ss', @start]
     @msg_end = ''
     to_index = 2
-    return unless ARGV[to_index]
+    return unless argv[to_index]
 
-    to_index += 1 if ARGV[to_index] == 'to'
-    if ARGV[to_index] == 'for'
-      to = MediaTrim.time_format ARGV[to_index + 1]
+    to_index += 1 if argv[to_index] == 'to'
+    if argv[to_index] == 'for'
+      to = MediaTrim.time_format argv[to_index + 1]
       MediaTrim.help 'No duration was specified' unless to
       @interval += ['-t', to]
       time_end = MediaTrim.add_times @start, to
       @msg_end = " for a duration of #{to} (until #{time_end})"
     else
-      to = MediaTrim.time_format(MediaTrim.to_seconds(ARGV[to_index]))
+      to = MediaTrim.time_format(MediaTrim.to_seconds(argv[to_index]))
       elapsed_time = MediaTrim.duration @start, to
       @interval += ['-to', to]
       @msg_end = " to #{to} (MediaTrim.duration #{elapsed_time})"
