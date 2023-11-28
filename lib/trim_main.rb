@@ -2,10 +2,16 @@ class MediaTrim
   # @return a new StandardError subclass containing the shorten_backtrace method
   TrimError = define_error
 
-  def options
+  attr_accessor :copy_filename, :fname, :interval, :msg_end, :overwrite, :quiet, :start, :view
+
+  def set_defaults
     @overwrite = '-n'
     @quiet = ['-hide_banner', '-loglevel', 'error', '-nostats']
     @view = true
+  end
+
+  def options
+    set_defaults
     OptionParser.new do |opts|
       opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
 
@@ -26,19 +32,19 @@ class MediaTrim
 
   def setup
     MediaTrim.help 'Please specify the name of the video file to trim' unless ARGV[0]
-    fname = MediaTrim.expand_env ARGV[0]
-    unless File.exist? fname
-      puts "Error: '#{File.realpath fname}' does not exist.".red
+    @fname = MediaTrim.expand_env ARGV[0]
+    unless File.exist? @fname
+      puts "Error: '#{File.realpath @fname}' does not exist.".red
       exit 1
     end
-    original_filename = File.basename fname, '.*'
-    ext = File.extname fname
-    @copy_filename = "#{File.dirname fname}/trim.#{original_filename}#{ext}"
+    original_filename = File.basename @fname, '.*'
+    ext = File.extname @fname
+    @copy_filename = "#{File.dirname @fname}/trim.#{original_filename}#{ext}"
 
-    MediaTrim.help 'Please specify the time to start trimming the video file from' unless ARGV[1]
-    start = ARGV[1]
+    MediaTrim.help 'Please specify the time to @start trimming the video file from' unless ARGV[1]
+    @start = ARGV[1]
 
-    @interval = ['-ss', start]
+    @interval = ['-ss', @start]
     @msg_end = ''
     to_index = 2
     return unless ARGV[to_index]
@@ -48,27 +54,27 @@ class MediaTrim
       to = MediaTrim.time_format ARGV[to_index + 1]
       MediaTrim.help 'No duration was specified' unless to
       @interval += ['-t', to]
-      time_end = MediaTrim.add_times start, to
+      time_end = MediaTrim.add_times @start, to
       @msg_end = " for a duration of #{to} (until #{time_end})"
     else
       to = MediaTrim.time_format(MediaTrim.to_seconds(ARGV[to_index]))
-      elapsed_time = MediaTrim.duration start, to
+      elapsed_time = MediaTrim.duration @start, to
       @interval += ['-to', to]
       @msg_end = " to #{to} (MediaTrim.duration #{elapsed_time})"
     end
-    return unless start >= to
+    return unless @start >= to
 
-    puts "Error: start time (#{start}) must be before end time (#{to})"
+    puts "Error: @start time (#{@start}) must be before end time (#{to})"
     exit 2
   end
 
   def run
-    puts "Trimming '#{fname}' from #{start}#{@msg_end}".cyan
+    puts "Trimming '#{@fname}' from #{@start}#{@msg_end}".cyan
     command = ['ffmpeg',
                *@quiet,
                '-hwaccel', 'auto',
                @overwrite,
-               '-i', fname,
+               '-i', @fname,
                '-acodec', 'aac',
                *@interval,
                @copy_filename]
@@ -94,7 +100,7 @@ class MediaTrim
             '-full_screen_monitor', '2',
             windows_path
     elsif `which cmd.exe`
-      exec 'cmd.exe', '/C', 'start', @copy_filename, "--extraintf='luaintf{intf=\"looper_custom_time\"}'"
+      exec 'cmd.exe', '/C', '@start', @copy_filename, "--extraintf='luaintf{intf=\"looper_custom_time\"}'"
     elsif `which xdg-open`
       # Open any file with its default Linux application with xdg-open.
       # Define default apps in ~/.local/share/applications/defaults.list,
