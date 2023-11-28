@@ -9,38 +9,42 @@ Gem::Specification.new do |spec|
   spec.description           = <<~END_DESC
     Trim an audio or video file using ffmpeg
 
-    Works with all formats supported by ffmpeg.
-    Seeks to the nearest frame positions by re-encoding.
-    Reduces file size procduced by OBS Studio by over 80 percent.
+    - Works with all formats supported by ffmpeg.
+    - Seeks to the nearest frame positions by re-encoding the media.
+    - Reduces file size procduced by OBS Studio by over 80 percent.
+    - Can be used as a Ruby gem.
+    - Installs the 'trim' command.
 
-    #{spec.name} names the output file by adding '.trim' before the file extension.
-    By default, does not overwrite pre-existing output files.
-    Displays the trimmed file, unless the -q option is specified
+    When run as a command, output files are named by adding a 'trim.' prefix to the media file name, e.g. 'dir/trim.file.ext'.
+    By default, the trim command does not overwrite pre-existing output files.
+    When trimming is complete, the trim command displays the trimmed file, unless the -q option is specified
 
-    Usage:
-      #{spec.name} [OPTIONS] dir/file.ext start [[to|for] END]
+    Command-line Usage:
+      trim [OPTIONS] dir/file.ext start [[to|for] end]
+
+    - start and end timecodes have the format [HH:[MM:]]SS[.XXX]
+      Note that decimal seconds may be specified, bug frames may not;
+      this is consistent with how ffmpeg parses timecodes.
+    - end defaults to end of audio/video file
 
     OPTIONS are:
-      -d Enable debug output
-      -f Overwrite output file if present
-      -v Verbose output
+      -d Enable debug output.
+      -f Overwrite output file if present.
+      -v Verbose output.
       -V Do not @view the trimmed file when complete.
-
-    start and END have the format [HH:[MM:]]SS[.XXX]
-    END defaults to end of audio/video file
 
     Examples:
       # Crop dir/file.mp4 from 15.0 seconds to the end of the video, save to dir/file.trim.mp4:
-      #{spec.name} dir/file.mp4 15
+      trim dir/file.mp4 15
 
       # Crop dir/file.mkv from 3 minutes, 25 seconds to 9 minutes, 35 seconds, save to dir/file.trim.mkv:
-      #{spec.name} dir/file.mkv 3:25 9:35
+      trim dir/file.mkv 3:25 9:35
 
       # Same as the previous example, using optional 'to' syntax:
-      #{spec.name} dir/file.mkv 3:25 to 9:35
+      trim dir/file.mkv 3:25 to 9:35
 
       # Save as the previous example, but specify the duration instead of the end time by using the for keyword:
-      #{spec.name} dir/file.mkv 3:25 for 6:10
+      trim dir/file.mkv 3:25 for 6:10
   END_DESC
   spec.email                 = ['mslinn@mslinn.com']
   spec.files                 = Dir['.rubocop.yml', 'LICENSE.*', 'Rakefile', '{lib,spec}/**/*', '*.gemspec', '*.md']
@@ -56,7 +60,7 @@ Gem::Specification.new do |spec|
   spec.name                 = 'media_trim'
   spec.post_install_message = <<~END_MESSAGE
 
-    Thanks for installing #{spec.name}!
+    Thanks for installing #{spec.name} v#{MediaTrimVersion::VERSION}!
 
   END_MESSAGE
   spec.require_paths         = ['lib']

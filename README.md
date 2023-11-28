@@ -1,14 +1,12 @@
-# `Trim` [![Gem Version](https://badge.fury.io/rb/media_trim.svg)](https://badge.fury.io/rb/media_trim)
+# `media_trim` [![Gem Version](https://badge.fury.io/rb/media_trim.svg)](https://badge.fury.io/rb/media_trim)
 
 Trims an audio or video file using `ffmpeg`.
 
-Works with all formats supported by ffmpeg.
-Seeks to the nearest frame positions by re-encoding.
-Reduces file size produced by OBS Studio by over 80 percent.
-
-Output files are named by adding a `trim.` prefix to the media file name.
-By default, trim does not overwrite pre-existing output files.
-Displays the trimmed file, unless the `-q` option is specified
+* Works with all formats supported by ffmpeg.
+* Seeks to the nearest frame positions by re-encoding the media.
+* Reduces file size produced by OBS Studio by over 80 percent.
+* Can be used as a Ruby gem.
+* Installs the `trim` command.
 
 
 ## Installation
@@ -57,26 +55,34 @@ $ bundle
 trim [OPTIONS] dir/file.ext start [[to|for] end]
 ```
 
-OPTIONS are:
+* `start` and `end` timecodes have the format [HH:[MM:]]SS[.XXX].
+  Note that decimal seconds may be specified, but frames may not;
+  this is consistent with how ffmpeg parses timecodes.
+* `end` defaults to the end of audio/video file
 
-* -d Enable debug output
-* -f Overwrite output file if present
-* -v Verbose output
-* -V Do not view the trimmed file when complete.
+When run as a command, output files are named by adding a `trim.` prefix to the media file name,
+e.g. `dir/trim.file.ext`.
+By default, the `trim` command does not overwrite pre-existing output files.
+When trimming is complete, the `trim` command displays the trimmed file,
+unless the `-q` option is specified.
 
-`start` and `end` have the format [HH:[MM:]]SS[.XXX]
-`end` defaults to the end of audio/video file
+`OPTIONS` are:
+
+* `-d` Enable debug output.
+* `-f` Overwrite output file if present.
+* `-v` Verbose output.
+* `-V` Do not view the trimmed file when complete.
 
 
 #### Examples
 
-Crop `dir/file.mp4` from 15.0 seconds to the end of the video, save to `dir/trim.file.mp4``:
+Crop `dir/file.mp4` from 15.0 seconds to the end of the video, save to `dir/trim.file.mp4`:
 
 ```shell
 $ trim dir/file.mp4 15
 ```
 
-Crop dir/file.mkv from 3 minutes, 25 seconds to 9 minutes, 35 seconds, save to dir/trim.file.mkv:
+Crop dir/file.mkv from 3 minutes, 25 seconds to 9 minutes, 35 seconds, save to `dir/trim.file.mkv`:
 
 ```shell
 $ trim dir/file.mkv 3:25 9:35
@@ -100,8 +106,8 @@ $ trim dir/file.mkv 3:25 for 6:10
 Need a way to figure out the start and stop times to trim a video?
 [DJV](https://darbyjohnston.github.io/DJV/) is an excellent video viewer.
 
-* allows frame-by-frame stepping
-* displays the current time reliabily
+* Allows frame-by-frame stepping
+* Displays the current time reliabily
 * F/OSS
 * Mac, Windows, Linux
 * High quality
