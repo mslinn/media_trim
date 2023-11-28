@@ -1,4 +1,4 @@
-require_relative 'lib/trim/version'
+require_relative 'lib/trim/version' unless defined? MediaTrimVersion::VERSION
 
 Gem::Specification.new do |spec|
   host = 'https://github.com/mslinn/trim'
@@ -61,8 +61,8 @@ Gem::Specification.new do |spec|
   END_MESSAGE
   spec.require_paths         = ['lib']
   spec.required_ruby_version = '>= 2.5.0'
-  spec.summary               = 'Trim an audio or video file using ffmpeg'
-  spec.version               = Trim::VERSION
+  spec.summary               = 'MediaTrim an audio or video file using ffmpeg'
+  spec.version               = MediaTrimVersion::VERSION
 
   spec.add_dependency 'colorator'
 end

@@ -1,4 +1,8 @@
-class Trim
+class MediaTrim
+  def self.define_error
+    Class.new StandardError
+  end
+
   def self.add_times(str1, str2)
     time1 = Time.parse mk_time str1
     time2 = Time.parse mk_time str2
@@ -25,14 +29,14 @@ class Trim
     time1 = Time.parse mk_time str1
     time2 = Time.parse mk_time str2
 
-    time_format(time2 - time1)
+    MediaTrim.time_format(time2 - time1)
   end
 
   # Expand an environment variable reference
   def self.expand_env(str, die_if_undefined: false)
     str&.gsub(/\$([a-zA-Z_][a-zA-Z0-9_]*)|\${\g<1>}|%\g<1>%/) do
       envar = Regexp.last_match(1)
-      raise TrimError, "Trim error: #{envar} is undefined".red, [] \
+      raise TrimError, "MediaTrim error: #{envar} is undefined".red, [] \
         if !ENV.key?(envar) && die_if_undefined # Suppress stack trace
 
       ENV.fetch(envar, nil)
@@ -44,7 +48,7 @@ class Trim
     when 0 then "0:0:#{str}"
     when 1 then "0:#{str}"
     when 2 then str
-    else raise StandardError, "Error: #{str} is not a valid time"
+    else raise TrimError, "Error: #{str} is not a valid time"
     end
   end
 
@@ -54,7 +58,7 @@ class Trim
     when 1 then str.to_i
     when 2 then array[0] + (array[1] * 60)
     when 3 then array[0] + (array[1] * 60) + (array[2] * 60 * 60)
-    else raise StandardError, "Error: #{str} is not a valid time"
+    else raise TrimError, "Error: #{str} is not a valid time"
     end
   end
 end

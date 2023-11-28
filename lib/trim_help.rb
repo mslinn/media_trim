@@ -1,8 +1,8 @@
-class Trim
+class MediaTrim
   def self.help(msg = nil)
     puts "Error: #{msg}.\n".red if msg
     puts <<~END_HELP
-      #{File.basename $PROGRAM_NAME} - Trim an audio or video file using ffmpeg
+      #{File.basename $PROGRAM_NAME} - MediaTrim an audio or video file using ffmpeg
 
       Works with all formats supported by ffmpeg.
       Seeks to the nearest frame positions by re-encoding.

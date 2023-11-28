@@ -24,7 +24,7 @@ end
 
 task publish: [:build] do
   $VERBOSE = nil
-  load 'trim/version.rb'
+  load 'trim/lib/version.rb'
   system "gem push pkg/trim-#{Trim::VERSION}.gem"
 end
 
