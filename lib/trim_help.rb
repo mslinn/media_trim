@@ -10,7 +10,7 @@ class MediaTrim
       - Can be used as a Ruby gem.
       - Installs the 'trim' command.
 
-      When run as a command, output files are named by adding a 'trim.' prefix to the media file name, e.g. 'dir/trim.file.ext'.
+      When run as a command, output files are named by adding a 'trim.' prefix to the media file name, e.g., 'dir/trim.file.ext'.
       By default, the trim command does not overwrite pre-existing output files.
       When trimming is complete, the trim command displays the trimmed file, unless the -q option is specified
 
@@ -43,11 +43,11 @@ class MediaTrim
         trim demo/demo.mp4 3:25 for 6:10
 
       Need a way to figure out the start and stop times to trim a video?
-      DJV is an excellent video viewer https://darbyjohnston.github.io/DJV/
+      DJV is an excellent video viewer. https://darbyjohnston.github.io/DJV/
       - allows frame-by-frame stepping
-      - displays the current time reliabily
+      - displays the current time reliably
       - F/OSS
-      - Mac, Windows, Linux
+      - Mac, Windows, and Linux
       - High quality
     END_HELP
     exit 1
