@@ -1,5 +1,9 @@
 # Change Log
 
+## (in progress)
+
+* Added `spec.platform` to `media_trim.gemspec` because `RubyGems.org` now requires it
+
 
 ## 0.2.0
 
