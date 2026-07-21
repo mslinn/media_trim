@@ -1,37 +1,42 @@
-TrimError = Class.new StandardError # Define a new StandardError subclass
+class TrimError < StandardError
+end # Define a new StandardError subclass
 
 class MediaTrim
-  attr_accessor :copy_filename, :fname, :interval, :msg_end, :overwrite, :quiet, :start, :view
+  attr_accessor :copy_filename, :debug, :fname, :interval, :msg_end, :overwrite, :quiet, :start, :view
 
   # @param to [String] end timecode; duration not supported for API
   def initialize(filename = nil, trimmed_filename = nil, start = '0', to = nil, **options)
     @fname = MediaTrim.expand_env(filename) if filename
     @copy_filename = MediaTrim.expand_env(trimmed_filename) if trimmed_filename
-    @start = MediaTrim.time_format start
-    @interval = ['-ss', MediaTrim.time_format(@start)]
+    @start = MediaTrim.time_format(MediaTrim.to_seconds(start))
+    @interval = ['-ss', @start]
+    @debug = options[:debug] || false
 
     @overwrite = options[:overwrite] ? '-y' : '-n'
     @quiet     = options[:quiet].nil? || options[:quiet] ? ['-hide_banner', '-loglevel', 'error', '-nostats'] : []
-    @view      = options[:view].nil? ? true : options[:view]
+    @view      = options[:view].nil? || options[:view]
 
     prepare(@start, to, mode: :timecode) if to
   end
 
   def options
     OptionParser.new do |opts|
-      opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
+      opts.banner = "Usage: #{$PROGRAM_NAME} [options] file start [[to|for] end]"
 
-      opts.on('-f', '--[no-]@overwrite', 'Overwrite any previous output') do |f|
-        @overwrite = f ? '-y' : '-n'
+      opts.on('-f', '--overwrite', 'Overwrite any previous output') do
+        @overwrite = '-y'
       end
-      opts.on('-v', '--[no-]verbose', 'Run verbosely') do |v|
-        @quiet = [] if v
+      opts.on('-v', '--verbose', 'Run verbosely') do
+        @quiet = []
       end
-      opts.on('-h', '', 'Display help') do |_|
-        help
+      opts.on('-h', '--help', 'Display help') do
+        MediaTrim.help
       end
-      opts.on('-V', '--[no-]@view', 'View ffmpeg output') do |v|
-        @view = false if v
+      opts.on('-V', '--no-view', 'Do not view the trimmed file when complete') do
+        @view = false
+      end
+      opts.on('-d', '--debug', 'Enable debug output') do
+        @debug = true
       end
     end.parse!
   end
@@ -49,7 +54,7 @@ class MediaTrim
     @copy_filename = "#{File.dirname @fname}/trim.#{original_filename}#{ext}"
 
     MediaTrim.help 'Please specify the time to @start trimming the video file from' unless argv[1]
-    @start = MediaTrim.time_format argv[1]
+    @start = MediaTrim.time_format(MediaTrim.to_seconds(argv[1]))
 
     @interval = ['-ss', @start]
     @msg_end = ''
@@ -72,7 +77,7 @@ class MediaTrim
 
   def prepare(from, duration_or_timecode, mode: :duration)
     if mode == :duration
-      timecode = MediaTrim.time_format duration_or_timecode
+      timecode = MediaTrim.time_format(MediaTrim.to_seconds(duration_or_timecode))
       time_end = MediaTrim.add_times from, timecode
       @interval += ['-t', time_end]
       @msg_end = " for a duration of #{timecode} (until #{time_end})"

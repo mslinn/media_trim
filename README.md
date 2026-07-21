@@ -69,7 +69,7 @@ When run as a command, output files are named by adding a `trim.` prefix to the 
 e.g. `dir/trim.file.ext`.
 By default, the `trim` command does not overwrite pre-existing output files.
 When trimming is complete, the `trim` command displays the trimmed file,
-unless the `-q` option is specified.
+unless the `-V` option is specified.
 
 `OPTIONS` are:
 

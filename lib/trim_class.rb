@@ -13,13 +13,26 @@ class MediaTrim
   end
 
   def self.time_format(elapsed_seconds)
-    elapsed_time = elapsed_seconds.to_i
+    elapsed_time = elapsed_seconds.to_f
     hours = (elapsed_time / (60 * 60)).to_i
-    minutes = ((elapsed_time - (hours * 60)) / 60).to_i
-    seconds = elapsed_time - (hours * 60 * 60) - (minutes * 60)
+    remaining_after_hours = elapsed_time - (hours * 60 * 60)
+    minutes = (remaining_after_hours / 60).to_i
+    seconds = remaining_after_hours - (minutes * 60)
 
-    result = "#{minutes.to_s.rjust 2, '0'}:#{seconds.to_s.delete_suffix('.0').rjust 2, '0'}"
-    result = "#{hours}:#{result}}" unless hours.zero?
+    # Format seconds with proper padding
+    if seconds == seconds.to_i
+      # No decimal part
+      seconds_str = seconds.to_i.to_s.rjust(2, '0')
+    else
+      # Has decimal part
+      whole_seconds = seconds.to_i
+      decimal_part = seconds - whole_seconds
+      decimal_str = format('%.2f', decimal_part)[1..]  # Remove leading "0" from "0.XX"
+      seconds_str = "#{whole_seconds.to_s.rjust(2, '0')}#{decimal_str}"
+    end
+
+    result = "#{minutes.to_s.rjust(2, '0')}:#{seconds_str}"
+    result = "#{hours}:#{result}" unless hours.zero?
     result
   end
 
@@ -52,9 +65,9 @@ class MediaTrim
   end
 
   def self.to_seconds(str)
-    array = str.split(':').map(&:to_i).reverse
+    array = str.split(':').map(&:to_f).reverse
     case array.length
-    when 1 then str.to_i
+    when 1 then str.to_f
     when 2 then array[0] + (array[1] * 60)
     when 3 then array[0] + (array[1] * 60) + (array[2] * 60 * 60)
     else raise TrimError, "Error: #{str} is not a valid time"
