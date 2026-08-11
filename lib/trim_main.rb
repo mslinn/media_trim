@@ -11,6 +11,7 @@ class MediaTrim
     @start = MediaTrim.time_format(MediaTrim.to_seconds(start))
     @interval = ['-ss', @start]
     @debug = options[:debug] || false
+    @no_hwaccel = options[:no_hwaccel] || false
 
     @overwrite = options[:overwrite] ? '-y' : '-n'
     @quiet     = options[:quiet].nil? || options[:quiet] ? ['-hide_banner', '-loglevel', 'error', '-nostats'] : []
@@ -37,6 +38,9 @@ class MediaTrim
       end
       opts.on('-d', '--debug', 'Enable debug output') do
         @debug = true
+      end
+      opts.on('-H', '--no-hwaccel', 'Disable hardware acceleration and use software decoding') do
+        @no_hwaccel = true
       end
     end.parse!
   end

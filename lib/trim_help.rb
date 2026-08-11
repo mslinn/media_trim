@@ -28,6 +28,11 @@ class MediaTrim
         -h Display help information.
         -v Verbose output
         -V Do not view the trimmed file when complete.
+        -H Disable hardware acceleration and use software decoding. If hardware
+           acceleration initialization fails on your system, the command will
+           automatically retry using software decoding. Software decoding is
+           slower, but it will produce the same output. If a required software
+           decoder is missing then the program will halt with an error.
 
       Examples:
         # Crop dir/file.mp4 from 15.0 seconds to the end of the video, save to demo/trim.demo.mp4:
