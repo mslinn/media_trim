@@ -78,6 +78,29 @@ unless the `-V` option is specified.
 * `-f` Overwrite output file if present.
 * `-v` Verbose output.
 * `-V` Do not view the trimmed file when complete.
+* `-H` Disable hardware acceleration and use software decoding. If hardware
+  acceleration cannot be initialized on your system, the command will automatically
+  retry using software decoding. Software decoding may be slower but will produce
+  the same output. If a required software decoder is missing the program will
+  halt and display a clear error message.
+
+## Preflight checks
+
+Before running `ffmpeg` the `trim` command performs a set of preflight checks and
+reports any issues in clear English sentences. The checks include:
+
+- Verifying the `ffmpeg` executable is available; if it is not installed the
+  command aborts with instructions to install it.
+- Probing hardware acceleration initialization; if hardware acceleration
+  initialization fails the tool will warn you and retry in software mode.
+- Verifying that `ffmpeg` can perform a short software decode of the input
+  file; if software decoding fails the command will abort as this indicates a
+  missing decoder or an unreadable input file.
+- Checking there is sufficient disk space in the destination directory; the
+  command aborts if there is not enough free space.
+
+These checks ensure the tool halts on fatal problems and otherwise produces a
+successful result using software decoding when needed.
 
 
 #### Examples
