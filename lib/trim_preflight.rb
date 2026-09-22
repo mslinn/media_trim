@@ -22,6 +22,19 @@ class MediaTrim
     sw_cmd = ['ffmpeg', '-v', 'error', '-i', input, '-t', '1', '-f', 'null', '-']
     exit 1 unless run sw_cmd
 
+    # Check dependencies required to view the trimmed file.
+    if @view
+      unless system('which wslpath > /dev/null 2>&1')
+        puts 'Fatal: wslpath is not installed.'.red
+        exit 1
+      end
+
+      unless system('which cmd.exe > /dev/null 2>&1')
+        puts 'Fatal: cmd.exe is not available.'.red
+        exit 1
+      end
+    end
+
     # Check available disk space in destination directory.
     begin
       dest_dir = Shellwords.escape(File.dirname(input))
@@ -29,6 +42,7 @@ class MediaTrim
     rescue StandardError
       avail = 0
     end
+
     return unless avail.zero? || avail < 100_000_000
 
     puts 'Fatal: There is less than 100 MB of free space available in the destination directory. Please free space and try again.'.red

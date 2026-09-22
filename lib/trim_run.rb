@@ -1,4 +1,25 @@
 class MediaTrim
+  def open_file(target)
+    if File.exist? target
+      windows_path = `wslpath -w "#{File.expand_path target}"`.strip
+      system 'cmd.exe', '/c', 'start', '""', windows_path
+    else
+      system 'cmd.exe', '/c', 'start', '""', target
+    end
+  end
+
+  def djv_executable
+    paths = Dir.glob('/mnt/c/Program Files/DJV */bin/djv.com')
+    return if paths.empty?
+
+    path = paths.max_by do |path|
+      match = File.basename(File.dirname(File.dirname(path))).match(/\ADJV\s+([\d.]+)\z/)
+      Gem::Version.new(match[1])
+    end
+
+    `wslpath -w "#{path}"`.strip
+  end
+
   def trim
     raise TrimError, 'Error: No filename was specified'.red unless @fname
     raise TrimError, 'Error: No trimmed filename was specified'.red unless @copy_filename
@@ -45,17 +66,23 @@ class MediaTrim
     # View trimmed file unless -q option was specified
     return unless @view
 
-    # Open in Windows if running in WSL
-    if File.exist? '/mnt/c/Program Files/DJV2/bin/djv.com'
+    djv = djv_executable
+    if djv
       realpath = File.realpath @copy_filename
       windows_path = `wslpath -m '#{realpath}'`.chomp
-      spawn 'cmd.exe', '/c',
-            'C:\\Program Files\\DJV2\\bin\\djv.com',
-            '-full_screen',
-            '-full_screen_monitor', '2',
-            windows_path
+
+      pid = spawn 'cmd.exe', '/c',
+                  djv,
+                  '-full_screen',
+                  '-full_screen_monitor', '2',
+                  windows_path,
+                  in:  File::NULL,
+                  out: File::NULL,
+                  err: File::NULL
+
+      Process.detach pid
     elsif `which cmd.exe`
-      exec 'cmd.exe', '/C', '@start', @copy_filename, "--extraintf='luaintf{intf=\"looper_custom_time\"}'"
+      open_file @copy_filename
     elsif `which xdg-open`
       # Open any file with its default Linux application with xdg-open.
       # Define default apps in ~/.local/share/applications/defaults.list,
