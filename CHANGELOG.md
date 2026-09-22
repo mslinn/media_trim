@@ -2,8 +2,8 @@
 
 ## 0.2.2
 
-* Added a preflight check that validates the runtime environment before invoking
- `ffmpeg`.  The preflight check halts on fatal errors such as a missing `ffmpeg`
+* Fixed the preflight check that validates the runtime environment before invoking
+ `ffmpeg`. The preflight check halts on fatal errors such as a missing `ffmpeg`
  binary, an unreadable input file, a missing software decoder for the input
  codec, or insufficient disk space.
 * Implemented an automatic software-fallback when hardware acceleration
