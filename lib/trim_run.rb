@@ -1,5 +1,5 @@
 class MediaTrim
-  def run
+  def trim
     raise TrimError, 'Error: No filename was specified'.red unless @fname
     raise TrimError, 'Error: No trimmed filename was specified'.red unless @copy_filename
     raise TrimError, 'Error: No starting timestamp was specified'.red unless @start
@@ -21,7 +21,7 @@ class MediaTrim
 
     # Execute ffmpeg (timed). If hwaccel was used and failed, retry once without hwaccel.
     start_clock = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-    status = system(*command)
+    status = run command
     end_clock = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     elapsed = end_clock - start_clock
     puts "Trim took #{MediaTrim.time_format elapsed.to_i}".cyan
@@ -33,7 +33,7 @@ class MediaTrim
         puts 'Warning: hardware acceleration failed. Retrying with software decoding, which may be slower but will produce the correct result.'.yellow
         soft_command = base_args
         start_clock = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-        status = system(*soft_command)
+        status = run soft_command
         end_clock = Process.clock_gettime(Process::CLOCK_MONOTONIC)
         elapsed = end_clock - start_clock
         puts "Retry (software) took #{MediaTrim.time_format elapsed.to_i}".cyan

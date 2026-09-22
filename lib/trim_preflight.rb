@@ -2,6 +2,15 @@ require 'open3'
 require 'shellwords'
 
 class MediaTrim
+  def run(command)
+    _, stderr, status = Open3.capture3(*command)
+    return true if status.success?
+
+    puts "Command failed with status #{status.exitstatus}:\n  #{command.shelljoin}".red
+    puts stderr.lines.first(2).join(' ').strip.red
+    false
+  end
+
   def preflight_check(input)
     # Check that ffmpeg is installed
     unless system('which ffmpeg > /dev/null 2>&1')
@@ -11,12 +20,7 @@ class MediaTrim
 
     # Verify that the input can be decoded in software.
     sw_cmd = ['ffmpeg', '-v', 'error', '-i', input, '-t', '1', '-f', 'null', '-']
-    _, sw_stderr, sw_status = Open3.capture3(*sw_cmd)
-
-    unless sw_status.success?
-      puts "Fatal: ffmpeg cannot decode the input file. #{sw_stderr.lines.first(2).join(' ').strip}".red
-      exit 1
-    end
+    exit 1 unless run sw_cmd
 
     # Check available disk space in destination directory.
     begin

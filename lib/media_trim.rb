@@ -13,5 +13,5 @@ if __FILE__ == $PROGRAM_NAME
   media_trim = MediaTrim.new
   media_trim.options
   media_trim.setup ARGV
-  media_trim.run
+  media_trim.trim
 end
