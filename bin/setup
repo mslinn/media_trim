@@ -19,6 +19,7 @@ rm -f Gemfile.lock
 if [[ -z "$( which bundle )" ]]; then gem install bundler; fi
 export BUNDLE_WITH=development
 bundle config set bin binstub
+bundle update --all
 bundle install
 
 if [ -d demo/ ]; then
