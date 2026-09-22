@@ -65,6 +65,7 @@ class MediaTrim
   end
 
   def self.to_seconds(str)
+    str = str.tr(';', ':')
     array = str.split(':').map(&:to_f).reverse
     case array.length
     when 1 then str.to_f

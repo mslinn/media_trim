@@ -11,8 +11,26 @@ RSpec.describe(MediaTrim) do
     expect(mt.msg_end).to       be_nil
   end
 
+  it 'initializes with only DJV start timecode' do
+    mt = described_class.new 'demo/demo.mp4', 'demo/trim.demo.mp4', '0;0'
+    expect(mt.fname).to         eq('demo/demo.mp4')
+    expect(mt.copy_filename).to eq('demo/trim.demo.mp4')
+    expect(mt.start).to         eq('00:00')
+    expect(mt.interval).to      eq(['-ss', '00:00'])
+    expect(mt.msg_end).to       be_nil
+  end
+
   it 'initializes with end timecode' do
     mt = described_class.new 'demo/demo.mp4', 'demo/trim.demo.mp4', '0', '1'
+    expect(mt.fname).to         eq('demo/demo.mp4')
+    expect(mt.copy_filename).to eq('demo/trim.demo.mp4')
+    expect(mt.start).to         eq('00:00')
+    expect(mt.interval).to      eq(['-ss', '00:00', '-to', '00:01'])
+    expect(mt.msg_end).to       eq(' to 00:01 (duration 00:01)')
+  end
+
+  it 'initializes with DJV end timecode' do
+    mt = described_class.new 'demo/demo.mp4', 'demo/trim.demo.mp4', '0;0', '0;1'
     expect(mt.fname).to         eq('demo/demo.mp4')
     expect(mt.copy_filename).to eq('demo/trim.demo.mp4')
     expect(mt.start).to         eq('00:00')
