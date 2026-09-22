@@ -8,16 +8,16 @@ class MediaTrim
     puts "Trimming '#{@fname}' from #{@start}#{@msg_end}".cyan
 
     # Run preflight checks which may print warnings or exit on fatal errors.
-    preflight_warnings = preflight_check @fname
+    preflight_check @fname
 
     # Build ffmpeg command. Respect explicit no-hwaccel option.
     base_args = ['ffmpeg', *@quiet, @overwrite, '-i', @fname, '-acodec', 'aac', *@interval, @copy_filename]
 
-    if @no_hwaccel
-      command = base_args
-    else
-      command = ['ffmpeg', *@quiet, '-hwaccel', 'auto', @overwrite, '-i', @fname, '-acodec', 'aac', *@interval, @copy_filename]
-    end
+    command = if @no_hwaccel
+                base_args
+              else
+                ['ffmpeg', *@quiet, '-hwaccel', 'auto', @overwrite, '-i', @fname, '-acodec', 'aac', *@interval, @copy_filename]
+              end
 
     # Execute ffmpeg (timed). If hwaccel was used and failed, retry once without hwaccel.
     start_clock = Process.clock_gettime(Process::CLOCK_MONOTONIC)
@@ -30,7 +30,7 @@ class MediaTrim
     unless status
       # If we attempted hwaccel and it failed, retry in software mode once.
       if !@no_hwaccel && command.include?('-hwaccel')
-        puts "Warning: hardware acceleration failed. Retrying with software decoding, which may be slower but will produce the correct result.".yellow
+        puts 'Warning: hardware acceleration failed. Retrying with software decoding, which may be slower but will produce the correct result.'.yellow
         soft_command = base_args
         start_clock = Process.clock_gettime(Process::CLOCK_MONOTONIC)
         status = system(*soft_command)
