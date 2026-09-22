@@ -61,10 +61,12 @@ trim [OPTIONS] dir/file.ext start [[to|for] end]
 ```
 
 * The `start` and `end` timecodes may have the format `[HH:[MM:]]SS[.XXX]`, or
-  for [DJV](https://github.com/grizzlypeak3d/DJV) compatibility, `[HH:[MM;]]SS[.XXX]`.
+  for [DJV](https://github.com/grizzlypeak3d/DJV) compatibility, `'[HH:[MM;]]SS[.XXX]'`.
   Note that decimal seconds may be specified, but frames may not;
   this is consistent with how `ffmpeg` parses timecodes.
-* `end` defaults to the end of the audio/video file
+  When specifying a timestamp containing a semicolon in a Bash shell, the
+  timestamp must be quoted or the shell will interpret the semicolon as a newline.
+* `end` defaults to the end of the audio/video file.
 
 When run as a command, output files are named by adding a `trim.` prefix to the media file name,
 e.g. `dir/trim.file.ext`.
@@ -142,7 +144,9 @@ Need a way to figure out the start and stop times to trim a video?
 * High quality
 
 The DJV timestamp format uses a semicolon (;) before seconds field. This program
-parses that format.
+parses that format. When using this format in a Bash session, the timestamp
+field must be quoted or the semicolon will be interpreted by the shell as a
+newline.
 
 
 ## Development

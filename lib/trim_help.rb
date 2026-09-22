@@ -19,7 +19,9 @@ class MediaTrim
 
       - The start and end timecodes may have the format [HH:[MM:]]SS[.XXX] or
         (for [DJV](https://github.com/grizzlypeak3d/DJV) compatibility) [HH:[MM;]]SS[.XXX].
-        Note that decimal seconds may be specified, but frames may not;
+        When specifying a timestamp containing a semicolon in a Bash shell, the
+        timestamp must be quoted or the shell will interpret the semicolon as a newline.
+        Note that decimal seconds may be specified, but decimal frames may not be specified;
         this is consistent with how ffmpeg parses timecodes.
       - end defaults to the end of the audio/video file
 
