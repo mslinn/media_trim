@@ -1,10 +1,18 @@
 class MediaTrim
+  def cmd_executable
+    path = '/mnt/c/Windows/System32/cmd.exe'
+    path if File.executable? path
+  end
+
   def open_file(target)
+    cmd = cmd_executable
+    return false unless cmd
+
     if File.exist? target
       windows_path = `wslpath -w "#{File.expand_path target}"`.strip
-      system 'cmd.exe', '/c', 'start', '""', windows_path
+      system cmd, '/c', 'start', '""', windows_path
     else
-      system 'cmd.exe', '/c', 'start', '""', target
+      system cmd, '/c', 'start', '""', target
     end
   end
 
@@ -70,8 +78,9 @@ class MediaTrim
     if djv
       realpath = File.realpath @copy_filename
       windows_path = `wslpath -m '#{realpath}'`.chomp
+      cmd = cmd_executable
 
-      pid = spawn 'cmd.exe', '/c',
+      pid = spawn cmd, '/c',
                   djv,
                   '-full_screen',
                   '-full_screen_monitor', '2',
@@ -81,13 +90,10 @@ class MediaTrim
                   err: File::NULL
 
       Process.detach pid
-    elsif `which cmd.exe`
-      open_file @copy_filename
-    elsif `which xdg-open`
-      # Open any file with its default Linux application with xdg-open.
-      # Define default apps in ~/.local/share/applications/defaults.list,
-      # which is read on every invocation.
-      # See https://askubuntu.com/questions/809981/set-the-default-video-player-from-the-command-line
+    elsif cmd_executable
+      status = open_file @copy_filename
+      exit 1 unless status
+    elsif system('which xdg-open > /dev/null 2>&1')
       exec 'xdg-open', @copy_filename
     end
   end
